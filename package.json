@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc --build && npm start",
+    "build": "tsc --build && npm prune --omit=dev",
+    "lint-fix": "eslint --fix .",
+    "test": "npx jest --watch --config=./jest.config.js",
+    "test:only": "npx jest --config=./jest.config.js"
   },
   "keywords": [],
   "author": "",
@@ -13,11 +17,17 @@
   "devDependencies": {
     "@types/big.js": "^6.2.2",
     "@types/luxon": "^3.6.2",
-    "typescript": "^5.8.3"
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
   },
   "dependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.14",
     "big.js": "^7.0.1",
+    "dotenv": "^17.2.0",
     "luxon": "^3.7.1"
   }
 }

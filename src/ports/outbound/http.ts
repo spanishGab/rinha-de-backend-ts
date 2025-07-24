@@ -2,7 +2,7 @@ export type HTTPRequestOptions = {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     url: URL;
     headers?: Record<string, string>;
-    body?: any;
+    body?: unknown;
 }
 
 export interface IHTTPClient {

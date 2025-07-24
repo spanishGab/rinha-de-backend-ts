@@ -17,5 +17,5 @@ export type PaymentResponseBody = {
 
 export interface IPaymentProcessorClient {
     checkHealth(): Promise<PaymentServerHealthResponseBody>;
-    processPayment(requestBody: PaymentRequestBody): Promise<IPaymentProcessorClient>;
+    processPayment(requestBody: PaymentRequestBody): Promise<PaymentResponseBody>;
 }

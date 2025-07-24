@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'ts-jest',
-  testMatch: ['**/test/**/*.+(test.ts)?(x)'],
+  testMatch: ['**/src/**/*.+(test.ts)?(x)'],
   rootDir: './src',
   transform: {
     '\\.tsx?$': [
