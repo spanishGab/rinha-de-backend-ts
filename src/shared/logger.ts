@@ -23,9 +23,9 @@ export function warn(message: string) {
     console.warn(`${DateTime.now()} [WARN]: ${message}`)
 }
 
-export function error(message: string) {
+export function error(error: Error) {
     if (LOG_LEVEL > 3) {
         return;
     }
-    console.error(`${DateTime.now()} [ERROR]: ${message}`)
+    console.error(`${DateTime.now()} [ERROR]: ${error.name} - ${error.message}`)
 }
