@@ -1,8 +1,10 @@
-import { mock } from 'node:test';
-import { PaymentServerHealthResponseBody } from '../../ports/inbound/clients/payment-processor-client';
+import { PaymentServerHealthResponseBody } from '../../ports/inbound/clients/payment-processor';
 import { UpdatePaymentServerHealthUseCase, ServerType } from './update-payment-server-health';
 
 describe("test UpdatePaymentServerHealthUseCase", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
     describe("with cache", () => {
         const useCaseParamMocks = {
             defaultServerClient: {
@@ -119,9 +121,11 @@ describe("test UpdatePaymentServerHealthUseCase", () => {
                 expect(fallbackServerClient.checkHealth).toHaveBeenCalled();
             }
             expect(cacheClient.get).toHaveBeenCalledWith(`${serverType}:health`);
+
+            const { server: _, ...expectedCache } = expected;
             expect(cacheClient.set).toHaveBeenCalledWith(
                 `${serverType}:health`,
-                expected,
+                expectedCache,
                 5
             );
         });
