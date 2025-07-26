@@ -1,4 +1,4 @@
-import { IPaymentProcessorClient, PaymentServerHealthResponseBody } from "../../ports/inbound/clients/payment-processor-client";
+import { IPaymentProcessorClient, PaymentServerHealthResponseBody } from "../../ports/inbound/clients/payment-processor";
 import { ICacheClient } from "../../ports/outbound/cache";
 
 export type ServerType = 'default' | 'fallback';
@@ -22,7 +22,7 @@ export class UpdatePaymentServerHealthUseCase implements IUpdatePaymentServerHea
         private readonly cacheClient: ICacheClient,
     ) {}
     async execute(server: ServerType): Promise<PaymentServerHealth> {
-        const client = server === 'default' ? this.defaultPaymentProcessorClient : this.fallbackPaymentProcessorClient;
+        const client = server === 'default' ? this.defaultPaymentProcessorClient : this.fallbackPaymentProcessorClient
 
         const currentHealthState = await this.cacheClient.get<PaymentServerHealthResponseBody>(`${server}:health`)
         if (currentHealthState !== null) {
