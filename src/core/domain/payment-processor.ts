@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { IPaymentProcessorClient, PaymentResponse } from "../../ports/inbound/clients/payment-processor";
 import { Payment } from "./entities/payment";
 
-export class PaymentProcessorStrategy {
+export class PaymentProcessorDirector {
     private strategy: IPaymentProcessorClient | null = null
 
     public choosePaymentProcessor(strategy: IPaymentProcessorClient) {
@@ -14,11 +14,9 @@ export class PaymentProcessorStrategy {
             throw new Error("invalid strategy")
         }
         return this.strategy.processPayment({
-            body: {
-                correlationId: payment.correlationId,
-                amount: payment.amount.toNumber(),
-                requestedAt: DateTime.now().toUTC().toISO()
-            }
+            correlationId: payment.correlationId,
+            amount: payment.amount.toNumber(),
+            requestedAt: DateTime.now().toUTC().toISO()
         })
     }
 }

@@ -6,17 +6,14 @@ export type PaymentServerHealthResponseBody = {
 }
 
 export type PaymentRequest = {
-    body: {
-        correlationId: UUID;
-        amount: number;
-        requestedAt: string;
-    }
+    correlationId: UUID;
+    amount: number;
+    requestedAt: string;
 }
 
 export type PaymentResponse = {
-    body: {
-        message: string;
-    }
+    success: boolean;
+    message?: string;
 }
 
 export interface IPaymentProcessorClient {
