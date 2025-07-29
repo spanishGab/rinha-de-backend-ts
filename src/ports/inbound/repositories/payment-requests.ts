@@ -2,9 +2,10 @@ export type PaymentRequestsRecord = {
     id?: string;
     correlationId: string;
     amount: string;
+    isProcessed: boolean;
     createdAt?: string;
 }
 
 export interface IPaymentRequestsRepository {
-    create(paymentRequest: PaymentRequestsRecord): Promise<void>;
+    upsert(paymentRequest: PaymentRequestsRecord): Promise<void>;
 }

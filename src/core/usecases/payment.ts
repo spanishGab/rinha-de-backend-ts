@@ -20,6 +20,11 @@ export class PaymentUseCase implements IPaymentUseCase {
     ) {}
 
     async execute(payment: Payment): Promise<boolean> {
+        await this.paymentRequestsRepository.upsert({
+            correlationId: payment.correlationId,
+            amount: payment.amount.toString(),
+            isProcessed: false,
+        });
         if (!(await this.choosePaymentProcessor())) {
             return false;
         }
@@ -29,12 +34,12 @@ export class PaymentUseCase implements IPaymentUseCase {
             error(new Error(`Payment failed: ${paymentResponse.message}`));
             return false;
         }
-        await this.paymentRequestsRepository.create({
+        await this.paymentRequestsRepository.upsert({
             correlationId: payment.correlationId,
             amount: payment.amount.toString(),
+            isProcessed: true,
         });
         return true;
-
     }
 
     private async choosePaymentProcessor(): Promise<boolean> {
