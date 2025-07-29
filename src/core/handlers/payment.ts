@@ -4,24 +4,29 @@ import { Payment } from "../domain/entities/payment";
 import { IPaymentUseCase } from "../usecases/payment";
 import Big from "big.js";
 import { info } from "../../shared/logger";
+import { IQueueClient } from "../../ports/outbound/queue";
 
 type PaymentRequestBody = {
     correlationId: UUID
     amount: number
 }
 
-export class IPaymentHandler implements IEventHandler<PaymentRequestBody, boolean> {
+export class PaymentHandler implements IEventHandler<PaymentRequestBody, void> {
     constructor(
-        private paymentUseCase: IPaymentUseCase,
+        private readonly paymentUseCase: IPaymentUseCase,
+        private readonly paymentQueueClient: IQueueClient
     ){}
 
-    async handle(input: PaymentRequestBody): Promise<boolean> {
+    async handle(input: PaymentRequestBody): Promise<void> {
         info(`starting to process payment ${JSON.stringify(input)}`)
-        const result = await this.paymentUseCase.execute({
+        const payment: Payment = {
             correlationId: input.correlationId,
             amount: new Big(input.amount),
-        })
-        return result
+        }
+        const paymentProcessed = await this.paymentUseCase.execute(payment)
+        if (!paymentProcessed) {
+            throw new Error(`Payment with correlationId ${input.correlationId} could not be processed`)
+        }
     }
 }
 
